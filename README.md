@@ -16,7 +16,7 @@
    git clone https://github.com/zacn04/leettrack.git
    cd leettrack
    ```
-3. ##Run Setup Script##
+3. **Run Setup Script:**
    ```bash
    bash setup.sh
    ```
