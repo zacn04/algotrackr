@@ -14,7 +14,7 @@
 
 2. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/leettrack.git
+   git clone https://github.com/zacn04/leettrack.git
    cd leettrack
    ```
 3. ##Run Setup Script##
