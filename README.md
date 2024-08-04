@@ -7,31 +7,20 @@
 
 ## Setup Instructions
 
-### Backend
+## Automated Setup
 
-1. Navigate to the backend directory:
+1. **Ensure Prerequisites:**
+   - **PostgreSQL:** Ensure PostgreSQL is installed on your machine. 
+
+2. **Clone the Repository:**
    ```bash
-   cd backend
+   git clone https://github.com/yourusername/leettrack.git
+   cd leettrack
    ```
-
-2. Install dependencies and run the backend server:
- ```bash
-  go mod tidy
-  go run main.go
-```
-
-
-### Frontend
-
-1. Navitage to the frontend directory (assuming you're in the backend one):
-  ```bash
-  cd ../frontend
-```
-2. Install dependencies and run the frontend app:
-  ```bash
-  npm install
-  npm start
-```
+3. ##Run Setup Script##
+   ```bash
+   bash setup.sh
+   ```
 
 
 ### Go crazy. 
