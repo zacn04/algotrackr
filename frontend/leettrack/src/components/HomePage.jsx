@@ -7,10 +7,9 @@ const HomePage = () => {
 
     const handleStart = async () => {
         try {
-            await clearDatabase();
             navigate('/form');
         } catch (error) {
-            console.error('Error clearing the database:', error);
+            console.error('Error:', error);
         }
     };
 
