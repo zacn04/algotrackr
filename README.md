@@ -5,7 +5,6 @@
 - `backend/` - Contains the backend code.
 - `frontend/` - Contains the frontend code.
 
-## Setup Instructions
 
 ## Automated Setup
 
