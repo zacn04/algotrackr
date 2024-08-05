@@ -122,6 +122,7 @@ const FormComponent = ( ) => {
             multiple
           >
             <option value="Array">Array</option>
+            <option value="Hash Table">Hash Table</option>
             <option value="Prefix Sum">Prefix Sum</option>
             <option value="Sliding Window">Sliding Window</option>
             <option value="Two Pointers">Two Pointers</option>
