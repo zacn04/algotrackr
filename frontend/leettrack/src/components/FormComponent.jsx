@@ -136,6 +136,7 @@ const FormComponent = ( ) => {
             <option value="Dynamic Programming">Dynamic Programming</option>
             <option value="Greedy">Greedy</option>
             <option value="Backtracking">Backtracking</option>
+            <option value="Matrix">Matrix</option>
             <option value="Math">Math</option>
             <option value="Bit Manipulation">Bit Manipulation</option>
             <option value="Geometry">Geometry</option>
