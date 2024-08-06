@@ -18,7 +18,7 @@ const getScoreColor = (score) => {
     if (score <= 20) return 'red';
     if (score <= 50) return 'yellow';
     if (score <= 100) return 'green';
-    return 'gray'; // Default color if out of range
+    return 'gray';  
 };
 
 export default ScoreDisplay;
