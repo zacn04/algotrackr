@@ -114,16 +114,5 @@ func main() {
 			c.JSON(http.StatusOK, gin.H{"topics": []string(topics)})
 		},
 	)
-
-	r.GET("/average-time-spent", func(c *gin.Context) {
-		topic := c.Query("topic")
-		avgTimeSpent, err := calculations.FilterByAverageTimeSpent(db, topic)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"average_time_spent": avgTimeSpent})
-	})
-
 	r.Run()
 }

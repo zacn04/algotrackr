@@ -8,15 +8,12 @@ import (
 func FilterByTopic(db *gorm.DB, topic string) (float64, error) {
 	var averageScore float64
 	err := db.Raw(`
-		SELECT AVG(score)
-		FROM sessions
-		WHERE topics @>
-jsonb_build_array(?)
-`,
-		topic).Scan(&averageScore).Error
+        SELECT AVG(score)
+        FROM sessions
+        WHERE ? = ANY(topics)
+    `, topic).Scan(&averageScore).Error
 	return averageScore, err
 }
-
 func GetTopNTopicsByAverageScore(db *gorm.DB, n int, weakest bool) (pq.StringArray, error) {
 	var topicScores []struct {
 		Topic    string
@@ -29,12 +26,9 @@ func GetTopNTopicsByAverageScore(db *gorm.DB, n int, weakest bool) (pq.StringArr
 	}
 
 	query := `
-		SELECT topic, AVG(score) as
-avg_score
+		SELECT topic, AVG(score) as avg_score
 		FROM (
-			SELECT
-jsonb_array_elements_text(topics) AS
-topic, score
+			SELECT unnest(topics) AS topic, score
 			FROM sessions
 		) AS subquery
 		GROUP BY topic
@@ -58,10 +52,9 @@ topic, score
 func FilterByAverageTimeSpent(db *gorm.DB, topic string) (float64, error) {
 	var averageTimeSpent float64
 	err := db.Raw(`
-		SELECT AVG(timeSpent
+		SELECT COALESCE(AVG(time_spent), 0)
 		FROM sessions
-		WHERE topics @>
-jsonb_build_array(?))
+		WHERE ? = ANY(topics)
 	`,
 		topic).Scan(&averageTimeSpent).Error
 	return averageTimeSpent, err

@@ -13,9 +13,19 @@ const HomePage = () => {
         }
     };
 
+    const handleLoad = async () => {
+        try {
+            navigate('/sessions');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="container">
+            <h1>LeetTrack</h1>
             <button onClick={handleStart}>New Session</button>
+            <button onClick={handleLoad}>Load Sessions</button>
         </div>
     );
 };

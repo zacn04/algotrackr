@@ -32,4 +32,31 @@ export const clearDatabase = async () => {
     }
 };
 
+export const getTopNTopics = async (n, weakest) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/top-topics`, {
+        params: {
+          n: n,
+          weakest: weakest
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching top N topics:', error);
+      throw error;
+    }
+  };
 
+  export const getFilteredByTopic = async (topic) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/filter-by-topic`, {
+        params: {
+            topic: topic
+        }
+      });
+      return response.json();
+    } catch (error) {
+      console.error('Error filtering by topic:', error);
+      throw error;
+    }
+  };
