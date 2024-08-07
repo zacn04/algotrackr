@@ -23,4 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # constants
-/constants.js
+./constants.js
+
+#api stuff
+./firebaseConfig.js
