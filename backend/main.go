@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	dsn := "host=localhost user=postgres dbname=db password=password port=5432 sslmode=disable"
+	dsn := "user=postgres.furtldrpqmnfqonpskhx password=bikwoh-manhEs-xiwqo0 host=aws-0-us-east-1.pooler.supabase.com port=6543 dbname=postgres"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
