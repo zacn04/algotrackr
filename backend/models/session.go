@@ -11,6 +11,7 @@ import (
 
 type Session struct {
 	gorm.Model
+	UserID       string         `json:userId`
 	ProblemName  string         `json:"problemName"`
 	Topics       pq.StringArray `gorm:"type:text[]" json:"topics"`
 	TimeSpent    float64        `json:"timeSpent"`
@@ -39,9 +40,9 @@ func (session *Session) BeforeCreate(tx *gorm.DB) (err error) {
 	case time < 30.0:
 		timeScore = 1.0
 	case time >= 30.0:
-		timeScore = math.Exp(-2.0 * float64(time-30.0) / 100.0)
+		timeScore = math.Exp((-5.0*float64(time-30.0) + 1) / 100.0)
 	default:
-		timeScore = math.Exp(-2.0 * float64(time-30.0) / 100.0)
+		timeScore = math.Exp((-5.0*float64(time-30.0) + 1) / 100.0)
 	}
 
 	if session.Attempts > 0 {

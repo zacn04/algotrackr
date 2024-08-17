@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import { auth } from '../firebaseConfig';
+import { supabase } from '../supabaseClient';
 
-const SignUp = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      alert('Sign-Up Successful');
-    } catch (error) {
-      alert(error.message);
-    }
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) console.log('Error:', error.message);
+    else console.log('Signup successful!');
   };
 
   return (
-    <form onSubmit={handleSignUp}>
+    <form onSubmit={handleSignup}>
       <input
         type="email"
         value={email}
@@ -34,6 +35,6 @@ const SignUp = () => {
       <button type="submit">Sign Up</button>
     </form>
   );
-};
+  };
 
-export default SignUp;
+export default Signup;

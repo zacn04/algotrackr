@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { postSession, getSessions, clearDatabase } from '../api';
 import '../styles.css';
 import SessionsList from './SessionsList';
+import { supabase } from '../supabaseClient';
 
 const interpolateColor = (value, minValue, maxValue) => {
   const normalizedValue = Math.max(0, Math.min(1, (value - minValue) / (maxValue - minValue)));
@@ -25,6 +26,11 @@ const interpolateColor = (value, minValue, maxValue) => {
   }
 
   return `rgb(${color.r}, ${color.g}, ${color.b})`;
+};
+
+const fetchUserId = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.user?.id;
 };
 
 const FormComponent = () => {
@@ -92,9 +98,17 @@ const FormComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userId = await fetchUserId();
+
+    if (!userId) {
+      console.error('User ID not found!');
+      return;
+    }
+
 
     const formattedData = {
       ...formData,
+      userId,
       attempts: parseInt(formData.attempts, 10),
       timeSpent: parseFloat(formData.timeSpent)
     };
@@ -234,13 +248,6 @@ const FormComponent = () => {
                 style={{ marginTop: '20px' }}
               >
                 Get Sessions
-              </button>
-              <button
-                title="Forget everything you've done"
-                onClick={handleClearSessions}
-                style={{ marginTop: '20px', marginLeft: '10px' }}
-              >
-                Clear Sessions
               </button>
             </div>
           )}
