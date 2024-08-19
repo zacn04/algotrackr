@@ -1,1 +1,3 @@
 frontend/leettrack/src/firebaseConfig.js
+frontend/leettrack/src/supabaseClient.js
+frontend/leettrack/.gitignore

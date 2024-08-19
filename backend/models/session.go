@@ -11,15 +11,15 @@ import (
 
 type Session struct {
 	gorm.Model
-	UserID       string         `json:userId`
-	ProblemName  string         `json:"problemName"`
+	UserID       string         `gorm:"column:userid" json:"userID"`
+	ProblemName  string         `gorm:"column:problemname" json:"problemName"`
 	Topics       pq.StringArray `gorm:"type:text[]" json:"topics"`
-	TimeSpent    float64        `json:"timeSpent"`
-	TrafficLight string         `json:"trafficLight"`
-	Attempts     int            `json:"attempts"`
-	Accuracy     float64        `json:"accuracy"`
-	Date         time.Time      `json:"date"`
-	Score        int            `json:"score"`
+	TimeSpent    float64        `gorm:"column:timespent" json:"timespent"`
+	TrafficLight string         `gorm:"column:trafficlight" json:"trafficlight"`
+	Attempts     int            `gorm:"column:attempts" json:"attempts"`
+	Accuracy     float64        `gorm:"column:accuracy" json:"accuracy"`
+	Date         time.Time      `gorm:"column:date" json:"date"`
+	Score        int            `gorm:"column:score" json:"score"`
 }
 
 func (session *Session) BeforeCreate(tx *gorm.DB) (err error) {
