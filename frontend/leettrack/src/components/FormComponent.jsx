@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { postSession, getSessions, clearDatabase } from '../api';
+import { postSession, getSessions} from '../api';
 import '../styles.css';
+import { useNavigate } from 'react-router-dom';
 import SessionsList from './SessionsList';
 import { supabase } from '../supabaseClient';
+import { API_BASE_URL } from '../constants';
 
 const interpolateColor = (value, minValue, maxValue) => {
   const normalizedValue = Math.max(0, Math.min(1, (value - minValue) / (maxValue - minValue)));
@@ -28,6 +30,7 @@ const interpolateColor = (value, minValue, maxValue) => {
   return `rgb(${color.r}, ${color.g}, ${color.b})`;
 };
 
+
 const fetchUserId = async () => {
   const { data: { session } } = await supabase.auth.getSession();
   return session?.user?.id;
@@ -48,27 +51,18 @@ const FormComponent = () => {
   const [sessions, setSessions] = useState([]);
   const [showScore, setShowScore] = useState(true);
   const [showButtons, setShowButtons] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (score !== null) {
       const timer = setTimeout(() => {
         setShowScore(false);
         setShowButtons(false);
-      }, 5000); // Hide after 5 seconds
+      }, 5000); 
 
-      return () => clearTimeout(timer); // Cleanup the timer on component unmount
+      return () => clearTimeout(timer); 
     }
   }, [score]);
-
-  const handleClearSessions = async () => {
-    try {
-      await clearDatabase();
-      alert('Sessions cleared successfully');
-    } catch (error) {
-      console.error('Error clearing sessions:', error);
-      alert('Failed to clear sessions');
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -90,14 +84,66 @@ const FormComponent = () => {
         [name]: value
       }));
     }
+
+    if (name === 'attempts') {
+      if (isNaN(value) || value <= 0) {
+        setError('Attempts must be a positive number.');
+      } else {
+        setError(null);
+      }
+    } else if (name === 'timeSpent') {
+      if (isNaN(value) || value < 0) {
+        setError('Time Spent must be a non-negative number.');
+      } else {
+        setError(null);
+      }
+    }
   };
 
   const getScoreColor = (score) => {
     return interpolateColor(score, 0, 100);
   };
 
+  const handleGetSessions = async () => {
+    const userId = await fetchUserId();
+
+    if (!userId) {
+      console.error('User ID not found!');
+      return;
+    }
+
+    setLoading(true);
+    try {
+        const fetchedSessions = await getSessions();
+        setSessions(fetchedSessions);
+        navigate('/sessions');
+    } catch (error) {
+        console.error('Error fetching sessions:', error);
+        setError('Failed to fetch sessions');
+    } finally {
+        setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { problemName, topics, attempts, timeSpent, trafficLight } = formData;
+
+    if (!problemName || topics.length === 0 || !trafficLight) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (isNaN(attempts) || attempts <= 0) {
+      alert('Attempts must be a positive number.');
+      return;
+    }
+
+    if (isNaN(timeSpent) || timeSpent < 0) {
+      alert('Time Spent must be a non-negative number.');
+      return;
+    }
     const userId = await fetchUserId();
 
     if (!userId) {
@@ -115,7 +161,6 @@ const FormComponent = () => {
 
     try {
       const response = await postSession(formattedData);
-      console.log('Form submitted successfully!', response);
       setScore(response.score);
       setShowScore(true);
       setShowButtons(true);
@@ -129,7 +174,7 @@ const FormComponent = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>
-            Name:
+            Problem Name:
             <input 
               type="text" 
               name="problemName" 
@@ -200,7 +245,7 @@ const FormComponent = () => {
 
         <div className="radio-group">
           <label>
-            Traffic Light:
+            Your Understanding (Traffic Light):
           </label>
           <label>
             <input 
@@ -244,7 +289,7 @@ const FormComponent = () => {
             <div className="button-group">
               <button
                 title="See past session data"
-                onClick={() => window.open('/sessions', '_blank')}
+                onClick={handleGetSessions}
                 style={{ marginTop: '20px' }}
               >
                 Get Sessions

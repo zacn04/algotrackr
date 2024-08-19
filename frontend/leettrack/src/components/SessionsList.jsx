@@ -72,7 +72,7 @@ const SessionsList = () => {
 
   return (
 <div style={{ padding: '20px' }}>
-      <Link to="/" style={{ textDecoration: 'none' }}>
+      <Link to="http://localhost:3000/" style={{ textDecoration: 'none' }}>
         <button
           style={{
             position: 'absolute',

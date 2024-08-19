@@ -4,20 +4,15 @@ import { supabase } from './supabaseClient';
 import FormComponent from './components/FormComponent';
 import HomePage from './components/HomePage';
 import SessionsList from './components/SessionsList';
-import Signup from './components/SignUp';
-import Login from './components/Login';     
-import Auth from './Auth';
-import Account from './Account';
+import LoginPage from './components/LoginPage';     
 
 const App = () => {
     const [session, setSession] = useState(null);
 
     useEffect(() => {
-        console.log(process.env.VITE_SUPABASE_URL)
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session)
           })
-      
           supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session)
           })
@@ -30,15 +25,9 @@ const App = () => {
     return (
         <Router>
             <div className="container" style={{ padding: '50px 0 100px 0' }}>
-                {!session ? (
-                    <Auth />
-                ) : (
-                    <Account key={session.user.id} session={session} />
-                )}
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/form" element={<ProtectedRoute element={<FormComponent />} />} />
                     <Route path="/sessions" element={<ProtectedRoute element={<SessionsList />} />} />
                     <Route path="*" element={<h1>404: Page Not Found</h1>} />

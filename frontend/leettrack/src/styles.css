@@ -60,9 +60,8 @@ h1 {
     width: 100%;
     margin: 0 auto;  
 }
-
 .radio-group label {
-    display: flex;
+    display: absolute;
     align-items: center;
     gap: 5px; 
     margin: 0;  
