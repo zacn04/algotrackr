@@ -41,16 +41,9 @@ const HomePage = () => {
 
     return (
         <div className="container">
-            {session ? (
-                <>
+            <h2>AlgoTrackr</h2>
                     <button onClick={handleStart}>New Session</button>
                     <button onClick={handleLoad}>Load Sessions</button>
-                </>
-            ) : (
-                <>
-                    <p>Please log in to access sessions.</p>
-                </>
-            )}
         </div>
     );
 };
