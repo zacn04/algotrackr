@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { debounce } from 'lodash';
 import { postSession, getSessions} from '../api';
 import '../styles.css';
 import { useNavigate } from 'react-router-dom';
 import SessionsList from './SessionsList';
-import { supabase } from '../supabaseClient';
 import { API_BASE_URL } from '../constants';
+
+
 
 const interpolateColor = (value, minValue, maxValue) => {
   const normalizedValue = Math.max(0, Math.min(1, (value - minValue) / (maxValue - minValue)));
@@ -32,8 +34,7 @@ const interpolateColor = (value, minValue, maxValue) => {
 
 
 const fetchUserId = async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  return session?.user?.id;
+  return 1;
 };
 
 const FormComponent = () => {
@@ -51,6 +52,7 @@ const FormComponent = () => {
   const [sessions, setSessions] = useState([]);
   const [showScore, setShowScore] = useState(true);
   const [showButtons, setShowButtons] = useState(true);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const FormComponent = () => {
       const timer = setTimeout(() => {
         setShowScore(false);
         setShowButtons(false);
-      }, 5000); 
+      }, 10000); 
 
       return () => clearTimeout(timer); 
     }
@@ -105,7 +107,7 @@ const FormComponent = () => {
   };
 
   const handleGetSessions = async () => {
-    const userId = await fetchUserId();
+    const userId = 1;
 
     if (!userId) {
       console.error('User ID not found!');
@@ -115,8 +117,14 @@ const FormComponent = () => {
     setLoading(true);
     try {
         const fetchedSessions = await getSessions();
-        setSessions(fetchedSessions);
-        navigate('/sessions');
+        if (fetchedSessions) {
+          setSessions(fetchedSessions);
+          navigate('/sessions');
+        } else {
+          throw new Error("!");
+        }
+        
+        
     } catch (error) {
         console.error('Error fetching sessions:', error);
         setError('Failed to fetch sessions');
@@ -126,10 +134,11 @@ const FormComponent = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();  // Prevents the default form submission action
 
     const { problemName, topics, attempts, timeSpent, trafficLight } = formData;
 
+    // Validation checks
     if (!problemName || topics.length === 0 || !trafficLight) {
       alert('Please fill in all required fields.');
       return;
@@ -144,30 +153,34 @@ const FormComponent = () => {
       alert('Time Spent must be a non-negative number.');
       return;
     }
-    const userId = await fetchUserId();
-
-    if (!userId) {
-      console.error('User ID not found!');
-      return;
-    }
-
-
-    const formattedData = {
-      ...formData,
-      userId,
-      attempts: parseInt(formData.attempts, 10),
-      timeSpent: parseFloat(formData.timeSpent)
-    };
 
     try {
+      const userId = 1;
+
+      if (!userId) {
+        console.error('User ID not found!');
+        return;
+      }
+
+      const formattedData = {
+        ...formData,
+        userId,
+        attempts: parseInt(attempts, 10),
+        timeSpent: parseFloat(timeSpent),
+      };
+
       const response = await postSession(formattedData);
       setScore(response.score);
       setShowScore(true);
       setShowButtons(true);
+      setSubmitDisabled(true);
+      
     } catch (error) {
       console.error('Error:', error);
+    } finally {
     }
   };
+
 
   return (
     <div className="container">
@@ -278,8 +291,9 @@ const FormComponent = () => {
             Green
           </label>
         </div>
-
-        <button type="submit">Submit</button>
+      <button type="submit" disabled={submitDisabled}>
+        {submitDisabled ? 'Submitted' : 'Submit'}
+        </button>
       </form>
 
       {score !== null && showScore && (
@@ -290,7 +304,7 @@ const FormComponent = () => {
               <button
                 title="See past session data"
                 onClick={handleGetSessions}
-                style={{ marginTop: '20px' }}
+                style={{ display: submitDisabled ? 'block' : 'none' }}
               >
                 Get Sessions
               </button>

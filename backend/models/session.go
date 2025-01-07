@@ -11,7 +11,7 @@ import (
 
 type Session struct {
 	gorm.Model
-	UserID       string         `gorm:"column:userid" json:"userID"`
+	ID           uint           `gorm:"primaryKey" json:"id"`
 	ProblemName  string         `gorm:"column:problemname" json:"problemName"`
 	Topics       pq.StringArray `gorm:"type:text[]" json:"topics"`
 	TimeSpent    float64        `gorm:"column:timespent" json:"timespent"`

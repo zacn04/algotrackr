@@ -72,7 +72,7 @@ const SessionsList = () => {
 
   return (
 <div style={{ padding: '20px' }}>
-      <Link to="http://localhost:3000/" style={{ textDecoration: 'none' }}>
+      <Link to="http://localhost:3000" style={{ textDecoration: 'none' }}>
         <button
           style={{
             position: 'absolute',
@@ -92,7 +92,6 @@ const SessionsList = () => {
           <select value={filterBy} onChange={handleFilterByChange} className="filter-select">
             <option value="problemName">Problem Name</option>
             <option value="topicName">Topic Name</option>
-            <option value="topTopics">Top Topics</option>
           </select>
         </label>
 

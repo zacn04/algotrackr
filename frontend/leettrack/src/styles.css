@@ -98,12 +98,10 @@ h1 {
   }
   
   .filter-select {
-    margin-left: 10px;
     padding: 5px;
   }
   
   .filter-input input[type="text"] {
-    margin-left: 30px;
     padding: 5px;
   }
   
@@ -117,5 +115,36 @@ h1 {
   
   .pagination-controls button {
     margin-right: 10px;
+  }
+  .score-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .score-topic {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .score-value {
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+  }
+  
+  .score-high {
+    background-color: green;
+  }
+  
+  .score-medium {
+    background-color: orange;
+  }
+  
+  .score-low {
+    background-color: red;
   }
   
