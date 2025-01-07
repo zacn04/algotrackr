@@ -27,13 +27,13 @@ cd algotrackr
 
 ### Step 2: Set Up the Backend
 1. Navigate to the backend directory:
-   ```bash
+```bash
    cd backend
-   ```
+```
 
 2. Install dependencies:
    ```bash
-go mod tidy
+   go mod tidy
    ```
 
 3. Configure the database connection in `main.go`:
@@ -44,7 +44,7 @@ go mod tidy
 
 4. Run the backend:
    ```bash
-go run main.go
+   go run main.go
    ```
    The backend will run on `http://localhost:8080` by default.
 
